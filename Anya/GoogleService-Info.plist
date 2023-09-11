@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>320655273030-urkilvila53frtfimhnqrqtgbllu7ln7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.320655273030-urkilvila53frtfimhnqrqtgbllu7ln7</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAgrJJX1T3SRksQkKvWok2Xvw5JHJxQNKk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>320655273030</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.chiamakabrowneyes.Anya</string>
+	<key>PROJECT_ID</key>
+	<string>anyaprototype</string>
+	<key>STORAGE_BUCKET</key>
+	<string>anyaprototype.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:320655273030:ios:67809cd3b93f528adaae47</string>
+</dict>
+</plist>
