@@ -41,6 +41,7 @@ class Model: ObservableObject {
         try await updateUserInfoForAllMessages(uid: user.uid, updatedInfo: ["displayname": user.displayName ?? "Guest"])
     }
     
+    
     func updatePhotoURL (for user: User, photoURL: URL) async throws {
         let request = user.createProfileChangeRequest()
         request.photoURL = photoURL

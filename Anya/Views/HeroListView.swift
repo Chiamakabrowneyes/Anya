@@ -10,13 +10,13 @@ import SwiftUI
 struct HeroListView: View {
     
     let heros: [Hero]
+    let chatMessages: [ChatMessage]
     @EnvironmentObject private var model: Model
-    var chatMessages: [ChatMessage]
-    var lastChatMessageDate: Date?
+    
     var body: some View {
         List(heros) { hero in
             NavigationLink {
-                GroupDetailView(group: hero)
+                GroupDetailView(hero: hero, viewModel: ChatViewModel(hero: hero))
             } label: {
                 HStack {
                     Image(systemName: "person.2")
@@ -24,20 +24,24 @@ struct HeroListView: View {
                     
                     Spacer()
                     
-                    if !model.chatMessages.isEmpty {
-                        let lastChatMessageDate = model.chatMessages[model.chatMessages.endIndex - 1].dateCreated
-                    }
+                    let lastChatMessageDate = model.chatMessages.last?.dateCreated
                     
-                    VStack(alignment: .trailing){
-                        Text(lastChatMessageDate ?? Date(), style: .time)
+                    VStack(alignment: .trailing) {
+                        Text(lastChatMessageDate != nil ? formatDate(lastChatMessageDate!) : "")
                         Image(systemName: "cube")
                     }
                 }
                 
                 Spacer()
             }
-            
         }
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .short
+        return dateFormatter.string(from: date)
     }
 }
 
@@ -47,3 +51,4 @@ struct GroupListView_Previews: PreviewProvider {
             .environmentObject(Model())
     }
 }
+

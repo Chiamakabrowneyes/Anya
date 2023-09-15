@@ -82,6 +82,6 @@ struct ChatMessageView: View {
 
 struct ChatMessageView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatMessageView(chatMessage: ChatMessage(text: "Helloo Chiamaka", uid: "hsahssacm", displayName: "Chiamaka"), direction: .right, color: .blue)
+        ChatMessageView(chatMessage: ChatMessage(fromId: "hsahssacm", toId: "Chiamaka", text: "recipientUserId", uid: "uyhihih", displayName: "Chiamaka display name"), direction: .right, color: .blue)
     }
 }

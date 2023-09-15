@@ -7,8 +7,14 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseFirestoreSwift
+import FirebaseAuth
 
-struct ChatMessage: Codable, Identifiable, Equatable {
+struct ChatMessage: Codable, Identifiable, Hashable{
+    @DocumentID var messageId: String?
+    let fromId: String
+    let toId: String
+    
     var documentId: String?
     let text: String
     let uid: String
@@ -28,11 +34,21 @@ struct ChatMessage: Codable, Identifiable, Equatable {
     var displayProfilePhotoURL: URL? {
         profilePhotoURL.isEmpty ? nil: URL(string: profilePhotoURL)
     }
+    
+    var chatPartnerId: String {
+        return fromId == Auth.auth().currentUser?.uid ? toId : fromId
+    }
+    
+    var isFromCurrentUser: Bool {
+        return fromId == Auth.auth().currentUser?.uid
+    }
 }
 
 extension ChatMessage {
     func toDictionary() -> [String: Any] {
         return [
+            "fromId": fromId,
+            "toId": toId,
             "text": text,
             "uid": uid,
             "dateCreated": dateCreated,
@@ -44,7 +60,9 @@ extension ChatMessage {
     
     static func fromSnapshot(snapshot: QueryDocumentSnapshot) -> ChatMessage? {
         let dictionary = snapshot.data()
-        guard let text = dictionary["text"] as? String,
+        guard let toId = dictionary["toId"] as? String,
+              let fromId = dictionary["fromId"] as? String,
+              let text = dictionary["text"] as? String,
               let uid = dictionary["uid"] as? String,
               let dateCreated = (dictionary["dateCreated"] as? Timestamp)?.dateValue(),
               let displayName = dictionary["displayName"] as? String,
@@ -54,7 +72,7 @@ extension ChatMessage {
         else {
             return nil
         }
-        return ChatMessage(documentId: snapshot.documentID, text: text, uid: uid, dateCreated: dateCreated, displayName: displayName, profilePhotoURL: profilePhotoURL, attachmentPhotoURL: attachmentPhotoURL)
+        return ChatMessage(fromId: fromId, toId: toId, documentId: snapshot.documentID, text: text, uid: uid, dateCreated: dateCreated, displayName: displayName, profilePhotoURL: profilePhotoURL, attachmentPhotoURL: attachmentPhotoURL)
     }
     
     

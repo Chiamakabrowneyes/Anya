@@ -33,9 +33,9 @@ struct SirenView: View {
                     
                     var riskText: String = "Risk Description: " + riskDescription
                     
-                    var sirenMessage = ChatMessage(text: sirenText, uid: currentUser.uid, displayName: currentUser.displayName ?? "Guest", profilePhotoURL: currentUser.photoURL == nil ? "": currentUser.photoURL!.absoluteString)
+                    var sirenMessage = ChatMessage(fromId: "hsahssacm", toId: "Chiamaka", text: sirenText, uid: currentUser.uid, displayName: currentUser.displayName ?? "Guest", profilePhotoURL: currentUser.photoURL == nil ? "": currentUser.photoURL!.absoluteString)
                     
-                    var riskMessage = ChatMessage(text: riskText, uid: currentUser.uid, displayName: currentUser.displayName ?? "Guest", profilePhotoURL: currentUser.photoURL == nil ? "": currentUser.photoURL!.absoluteString)
+                    var riskMessage = ChatMessage(fromId: "hsahssacm", toId: "Chiamaka", text: riskText, uid: currentUser.uid, displayName: currentUser.displayName ?? "Guest", profilePhotoURL: currentUser.photoURL == nil ? "": currentUser.photoURL!.absoluteString)
                     
                     do {
                         try await model.saveChatMessageToGroup(chatMessage: sirenMessage, group: hero)
