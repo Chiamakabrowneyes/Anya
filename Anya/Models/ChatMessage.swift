@@ -11,6 +11,15 @@ import FirebaseFirestoreSwift
 import FirebaseAuth
 
 struct ChatMessage: Codable, Identifiable, Hashable{
+
+    static func == (lhs: ChatMessage, rhs: ChatMessage) -> Bool {
+            return lhs.id == rhs.id
+        }
+
+    func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+    
     @DocumentID var messageId: String?
     let fromId: String
     let toId: String
@@ -22,6 +31,10 @@ struct ChatMessage: Codable, Identifiable, Hashable{
     let displayName: String
     var profilePhotoURL: String = ""
     var attachmentPhotoURL: String = ""
+    
+    var hero: Hero?
+    
+    
     
     var id: String {
         documentId ?? UUID().uuidString

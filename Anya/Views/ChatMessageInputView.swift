@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct ChatMessageInputView: View {
-    
+    @StateObject var viewModel: ChatViewModel
     @Binding var groupDetailConfig: GroupDetailConfig
     @FocusState var isChatTextFieldFocused: Bool
+    @EnvironmentObject private var appState: AppState
+    
     var onSendMessage: () -> Void
+    func clearFields() {
+        groupDetailConfig.clearForm()
+        appState.loadingState = .idle
+    }
     
     var body: some View {
         HStack {
@@ -27,7 +33,10 @@ struct ChatMessageInputView: View {
             
             Button {
                 if groupDetailConfig.isValid {
-                    onSendMessage()
+                    let messageText = groupDetailConfig.chatText // Access the underlying value
+                    print(messageText) // Print the message text
+                    viewModel.sendMessage(text: messageText) // Call the sendMessage function with the message text
+                    clearFields()
                 }
             } label: {
                 Image(systemName: "paperplane.circle.fill")
@@ -38,8 +47,3 @@ struct ChatMessageInputView: View {
     }
 }
 
-struct ChatMessageInputView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatMessageInputView(groupDetailConfig:  .constant(GroupDetailConfig(chatText: "Heloo World")), onSendMessage: { })
-    }
-}

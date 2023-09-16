@@ -50,7 +50,7 @@ struct GroupDetailView: View {
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
-                ChatMessageListView(chatMessages: model.chatMessages)
+                ChatMessageListView(viewModel: viewModel, chatMessages: model.chatMessages, hero: hero)
                     .onChange(of: model.chatMessages) { value in
                         if !model.chatMessages.isEmpty {
                             let lastChatMessage = model.chatMessages[model.chatMessages.endIndex - 1]
@@ -87,11 +87,11 @@ struct GroupDetailView: View {
             }
         })
             .overlay(alignment: .bottom, content: {
-                ChatMessageInputView(groupDetailConfig: $groupDetailConfig, isChatTextFieldFocused: _isChatTextFieldFocused) {
+                ChatMessageInputView(viewModel: viewModel, groupDetailConfig: $groupDetailConfig, isChatTextFieldFocused: _isChatTextFieldFocused) {
                     Task {
                         do {
                             appState.loadingState = .loading("Sending...")
-                            viewModel.sendMessage()
+                            viewModel.sendMessage(text: groupDetailConfig.chatText)
                             clearFields()
                         } catch {
                             print(error.localizedDescription)

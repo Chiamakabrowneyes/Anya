@@ -33,6 +33,8 @@ struct ChatMessageView: View {
         }
     }
     
+
+    
     var body: some View {
         HStack {
             //profile photo

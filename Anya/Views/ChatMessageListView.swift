@@ -9,8 +9,13 @@ import SwiftUI
 import FirebaseAuth
 
 struct ChatMessageListView: View {
+    @StateObject var viewModel: ChatViewModel
+    let hero: Hero
     
-    let chatMessages: [ChatMessage]
+    init(viewModel: ChatViewModel, chatMessages: [ChatMessage], hero: Hero) {
+        self._viewModel = StateObject(wrappedValue: ChatViewModel(hero: hero))
+        self.hero = hero
+    }
     
     private func isChatMessageFromCurrentUser(_ chatMessage: ChatMessage) -> Bool {
         guard let currentUser = Auth.auth().currentUser else {
@@ -22,7 +27,8 @@ struct ChatMessageListView: View {
     var body: some View {
         ScrollView{
             VStack {
-                ForEach(chatMessages) { chatMessage in
+                
+                ForEach(viewModel.chatMessages, id: \.id) { chatMessage in
                     VStack {
                         if isChatMessageFromCurrentUser(chatMessage) {
                             HStack {
@@ -36,15 +42,10 @@ struct ChatMessageListView: View {
                         }
                         Spacer().frame(height: 20)
                             .id(chatMessage.id)
+                        
                     }.listRowSeparator(.hidden)
                 }
             }
         }.padding([.bottom], 60)
-    }
-}
-
-struct ChatMessageListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatMessageListView(chatMessages: [])
     }
 }

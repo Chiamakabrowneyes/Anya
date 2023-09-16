@@ -29,11 +29,31 @@ struct ChatRoomMessage {
                                   toId: chatPartnerId,
                                   text: text,
                                   uid: currentUid,
+                                  dateCreated: Date(),
                                   displayName: currentUser.displayName ?? "Guest",
-                                  profilePhotoURL: currentUser.photoURL == nil ? "": currentUser.photoURL!.absoluteString)
+                                  profilePhotoURL: currentUser.photoURL == nil ? "": currentUser.photoURL!.absoluteString
+        )
         
         guard let messageData = try? Firestore.Encoder().encode(message) else { return }
         currentUserRef.setData(messageData)
         chatPartnerRef.document(messageId).setData(messageData)
+    }
+    
+    static func observeMessages(chatPartner: Hero, completion: @escaping([ChatMessage]) -> Void) {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        let chatPartnerId = chatPartner.id
+        let query = messagesCollection
+            .document(currentUid)
+            .collection(chatPartnerId)
+            .order(by: "timeCreated", descending: false)
+        
+        query.addSnapshotListener { snapshot, _ in
+            guard let changes = snapshot?.documentChanges.filter({ $0.type == .added }) else { return }
+            var chatMessages = changes.compactMap({ try? $0.document.data(as: ChatMessage.self)})
+            for (index, message) in chatMessages.enumerated() where message.fromId != currentUid {
+                chatMessages[index].hero = chatPartner
+            }
+            completion(chatMessages)
+        }
     }
 }
